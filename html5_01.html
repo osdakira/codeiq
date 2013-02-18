@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta charset="utf-8" />
+<title>【CodeIQ】モグラたたきゲーム</title>
+<script language="JavaScript">
+<!--
+// 各オブジェクト
+var ctx, mogu, obj, touch;
+var point;
+// キャンパスの大きさ
+var canvasWidth, canvasHeight;
+
+onload = function() {
+    // 描画コンテキストの取得
+    canvas = document.getElementById('mogucanvas');
+    if ( ! canvas || ! canvas.getContext ) { return false; }
+    ctx = canvas.getContext('2d');
+
+    canvasWidth = parseInt(canvas.width);
+    canvasHeight = parseInt(canvas.height);
+
+    // フォント設定
+    ctx.font = "10pt  Helvetica";
+
+    // 初期ポイント
+    point = 0;
+
+    // 座標オブジェクト
+    obj = new Object();
+
+    // タッチオブジェクト
+    touch = new Object();
+    touch.x = 0;
+    touch.y = 0;
+
+    // 初期表示
+    mogutouch();
+
+    // タッチイベント関数の登録
+    canvas.addEventListener('touchstart', touchHandle, false);
+
+};
+
+// タッチイベントの処理関数
+function touchHandle(event) {
+
+    // キャンバスの座標を取得
+    var rect = event.target.getBoundingClientRect();
+
+    // キャンバスでのタッチ座標を取得
+    touch.x = event.touches[0].pageX - rect.left;
+    touch.y = event.touches[0].pageY - rect.top;
+    event.preventDefault() ;
+
+    // 画像を触ったか判断
+    if (touch.x > obj.x && touch.x < obj.x + obj.w) {
+        if (touch.y > obj.y && touch.y < obj.y + obj.h) {
+
+            // ポイントアップ
+            point += 10;
+            mogutouch();
+        }
+    }
+};
+
+// もぐらをタッチした時の関数
+function mogutouch(){
+
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    // ポイント表記
+    ctx.fillText(point, 20, 20);
+
+    // 表示座標をランダムで取得
+    obj.x = Math.floor(Math.random() * 250);
+    obj.y = 20 + Math.floor(Math.random() * 250)
+
+    // 画像オブジェクト
+    mogu = new Image();
+    mogu.src = "./mogu.png";
+    mogu.onload = function() {
+        obj.w = mogu.width;
+        obj.h = mogu.height;
+        ctx.drawImage(mogu,obj.x,obj.y);
+    }
+
+};
+
+setTimeout("scrollTo(0,1)", 50);
+//-->
+</script>
+</head>
+<body>
+<canvas id='mogucanvas' width='305' height='350' style="background-color: white;"></canvas>
+</body>
+</html>
