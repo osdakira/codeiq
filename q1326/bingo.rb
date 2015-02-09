@@ -1,9 +1,17 @@
 # coding: utf-8
 
+# 1〜15のどれか、というのは、重複を許可するもの？
+# Wikipedia によると重複はないらしい。
+
 class Bingo
   def self.generate_card
-    # 以下の行は削除して、自分でロジックを実装してください。
-    sample
+    cols = %w(B I N G O).each_with_index.map do |key, i|
+      [key] + [*(i * 15 + 1)..(i * 15 + 15)].sample(5)
+    end
+    cols[2][3] = " "
+    cols.transpose.map do |row|
+      row.map { |cell| cell.to_s.rjust(2) }.join(" | ")
+    end.join("\n")
   end
 
   def self.sample
@@ -78,7 +86,6 @@ describe Bingo do
       expect(numbers_by_col.flatten.uniq).to eq numbers_by_col.flatten
     end
     it '毎回結果が変わること' do
-      pending '独自のコードを実装したらこの行は削除してください'
       cards = 10.times.map { Bingo.generate_card }
       expect(cards.uniq).to eq cards
     end
