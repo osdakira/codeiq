@@ -109,6 +109,7 @@ class IslandCounterTest < MiniTest::Test
   def test_calc_island_groups
     assert_equal 3, IslandCounter.new.calc_island_groups("AegeanSea/AegeanSea1.csv").size
     assert_equal 28, IslandCounter.new.calc_island_groups("AegeanSea/AegeanSea2.csv").size
+    assert_equal 69, IslandCounter.new.calc_island_groups("AegeanSea/AegeanSea3.csv").size
   end
 end
 
